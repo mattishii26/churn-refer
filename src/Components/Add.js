@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReactGA from 'react-ga';
 import {
     Container,
     InputGroup,
@@ -51,35 +52,37 @@ const Add = (props) => {
     const referMeHandler = async () => {
         setAddShown(false);
         const rawResponse = await fetch('https://drs8w4z3c7.execute-api.us-west-1.amazonaws.com/PROD', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-              Email: inputEmail === ""? null: inputEmail, 
-              ReferralLink: inputUrl === ""? null: inputUrl,
-              CardCompany: cardCompanyTitle,
-              CreditCard: creditCardTitle
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                //Email: inputEmail === ""? null: inputEmail, 
+                ReferralLink: inputUrl === "" ? null : inputUrl,
+                CardCompany: cardCompanyTitle,
+                CreditCard: creditCardTitle
             })
         });
         const content = await rawResponse.json();
-        console.log(content);
-        console.log(rawResponse);
-      
-        if(content !== null){
-            setAlertMessage(<Alert variant="danger" dismissible onClose={() =>{setShowAlert(false)}}>
-            <Alert.Heading>Oh no!</Alert.Heading>
-            <p>
-            {content.errorMessage}
+        ReactGA.event({
+            category: "Added Referral",
+            action: "User Added a Referral",
+        });
+
+        if (content !== null) {
+            setAlertMessage(<Alert variant="danger" dismissible onClose={() => { setShowAlert(false) }}>
+                <Alert.Heading>Oh no!</Alert.Heading>
+                <p>
+                    {content.errorMessage}
+                </p>
+            </Alert>);
+        } else {
+            setAlertMessage(<Alert variant="success" dismissible onClose={() => { setShowAlert(false) }}>
+                <Alert.Heading>On your way to some points!</Alert.Heading>
+                <p>
+                    Your referral link for the {cardCompanyTitle} {creditCardTitle} has been successfully added!
             </p>
-          </Alert>);
-        }else{
-            setAlertMessage(<Alert variant="success" dismissible onClose={() =>{setShowAlert(false)}}>
-            <Alert.Heading>On your way to some points!</Alert.Heading>
-            <p>
-            Your referral link for the {cardCompanyTitle} {creditCardTitle} has been successfully added!
-            </p>
-          </Alert>);
+            </Alert>);
         }
         setShowAlert(true);
 
@@ -88,13 +91,21 @@ const Add = (props) => {
     return (
         <Container className="m-2">
             <div className="buttonBackground">
-            <Button variant="success" onClick={() => { setAddShown(true) }}>
-            <img src="./cashback.png" className="buttonImage"/>
+                <Button variant="success"
+                    onClick={() => {
+                        setAddShown(true);
+                        ReactGA.event({
+                            category: "Add Referral",
+                            action: "User pressed Add Referral Button",
+                        });
+                    }
+                    }>
+                    <img src="./cashback.png" className="buttonImage" />
                 &nbsp;Want to add your referral link?
             </Button>
             </div>
             {
-                showAlert? alertMessage : ""
+                showAlert ? alertMessage : ""
             }
 
             <Modal
@@ -108,14 +119,13 @@ const Add = (props) => {
                 <Modal.Body>
                     <p>
                         <b>Instruction:</b><br />
-                        Select the credit card you are entering a referral link for. <br />
-                        If you'd like to get notified on when your link is used or deleted, feel free to enter your email!
+                        Select the credit card you are entering a referral link for.
                     </p>
                     <b>Rules</b>
                     <ol>
-                            <li>Referral links are automatically deleted after 30 days or once copied by a user</li>
-                            <li>Referral links are only accepted if they do not exist in the system already</li>
-                        </ol>
+                        <li>Referral links are automatically deleted once copied by a user</li>
+                        <li>Referral links are only accepted if they do not exist in the system already</li>
+                    </ol>
                     <ButtonGroup>
                         <DropdownButton
                             as={InputGroup.Prepend}
@@ -151,8 +161,8 @@ const Add = (props) => {
                                 onChange={(ev) => setFilterString(ev.target.value)}
                             />
                             {
-                                cardChoices.filter(x => x.toLowerCase().includes(filterString.toLowerCase())).map(cardItem =>{
-                                    return(
+                                cardChoices.filter(x => x.toLowerCase().includes(filterString.toLowerCase())).map(cardItem => {
+                                    return (
                                         <Dropdown.Item eventKey={cardItem}>{cardItem}</Dropdown.Item>
                                     )
                                 })
@@ -166,15 +176,15 @@ const Add = (props) => {
                             <Form.Label>Referral Link</Form.Label>
                             <Form.Control type="text" placeholder="Enter Referral Link" value={inputUrl} onChange={(ev) => { setInputUrl(ev.target.value) }} required />
                         </Form.Group>
-                        <Form.Group>
+                        {/* <Form.Group>
                             <Form.Label>Email address</Form.Label>
                             <Form.Control type="email" placeholder="Enter email" value={inputEmail} onChange={(ev) => { setInputEmail(ev.target.value) }} />
                             <Form.Text className="text-muted">
                                 We'll never share your email with anyone else.
     </Form.Text>
-                        </Form.Group>
+                        </Form.Group> */}
                     </Form>
-                    
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={() => { setAddShown(false); resetAddForm(); }}>
@@ -185,7 +195,7 @@ const Add = (props) => {
           </Button>
                 </Modal.Footer>
             </Modal>
-                            
+
         </Container>
 
     )

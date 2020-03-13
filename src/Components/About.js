@@ -42,7 +42,7 @@ const About = () => {
             Are there any rules?
           </h2>
           <p>
-            To give everyone a fair chance, referral links are randomly picked and automatically deleted once the link has been clicked on or if the link has been in the system for more than 30 days. Also, if your link is already in the system, it will not be accepted.
+            To give everyone a fair chance, referral links are randomly picked and automatically deleted once the link has been clicked on. Also, if your link is already in the system, it will not be accepted.
           </p>
           <h2>Where did you get your icons from?</h2>
           <p>

@@ -1,6 +1,8 @@
 import React from 'react';
+import ReactGA from 'react-ga';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Data from './data';
+import Keys from './keys';
 import {
   Container,
   Row,
@@ -15,8 +17,13 @@ import AnalyticsData from './Components/AnalyticsData';
 import About from './Components/About';
 import Contact from './Components/Contact';
 
+ReactGA.initialize(Keys.GA_TRACKING_ID);
+ReactGA.pageview(window.location.pathname);
+
 const App = () => {
   return (
+    
+
     <div className="App">
       <NavBar></NavBar>
       <div id="top"></div>
