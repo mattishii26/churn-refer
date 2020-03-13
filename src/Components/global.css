@@ -1,0 +1,12 @@
+.buttonImage{
+    max-width: 35px;
+    max-height: 35px;
+}
+
+.buttonBackground{
+    background-image: linear-gradient(to bottom right,#3FE0D0, #003152);
+    border-radius: 5px;
+    padding: 50px;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}

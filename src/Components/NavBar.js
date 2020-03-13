@@ -6,11 +6,22 @@ import {
 
 const NavBar = () => {
     return (
-        <Navbar bg="primary" variant="dark">
-            <Navbar.Brand href="#home">PointsReferral</Navbar.Brand>
+
+        <Navbar bg="primary" variant="dark" sticky="top">
+            <Navbar.Brand href="/">
+                    Churnin' Points
+            </Navbar.Brand>
+
             <Nav className="ml-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#features">Features</Nav.Link>
+                <Nav.Link href="#top">
+                    Home
+                </Nav.Link>
+                <Nav.Link href="#about">
+                    About
+                </Nav.Link>
+                <Nav.Link href="#contact">
+                    Contact
+                </Nav.Link>
             </Nav>
         </Navbar>
     )
