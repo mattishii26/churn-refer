@@ -1,6 +1,7 @@
 {
   "name": "churn-refer",
   "version": "0.1.0",
+  "homepage": "http://www.churninpoints.com/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
